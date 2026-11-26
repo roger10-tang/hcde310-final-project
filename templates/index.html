@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GolfFinderUW</title>
+  <style>
+    body { max-width: 680px; margin: 40px auto; padding: 0 20px; font-family: system-ui, sans-serif; line-height: 1.6; }
+    article { border: 1px solid #ccc; padding: 16px; margin: 16px 0; border-radius: 8px; }
+    button, input { font: inherit; padding: 6px 10px; }
+    label { display: block; margin-top: 10px; }
+    button { cursor: pointer; margin-top: 12px; }
+  </style>
+  <script src="{{ url_for('static', filename='counts.js') }}" defer></script>
+</head>
+<body>
+  <h1>GolfFinderUW</h1>
+  {% for message in get_flashed_messages() %}
+    <p role="status">{{ message }}</p>
+  {% endfor %}
+  <h2>Posted tee times</h2>
+  <p id="count-status" role="status"></p>
+  {% for post in posts %}
+    <article data-post-id="{{ post.postId }}">
+      <h3>{{ post.courseName }}</h3>
+      <p>{{ post.date }} at {{ post.time }} (Seattle time)</p>
+      <p><span data-count>{{ states[post.postId].count }}</span> interested</p>
+      <form action="{{ url_for('toggle_interest', post_id=post.postId) }}" method="post">
+        <input type="hidden" name="formToken" value="{{ session.formToken }}">
+        <button type="submit" data-interest aria-pressed="{{ 'true' if states[post.postId].interested else 'false' }}">{{ 'Remove interest' if states[post.postId].interested else "I'm interested" }}</button>
+      </form>
+    </article>
+  {% else %}
+    <p>No tee times posted yet. Add one below.</p>
+  {% endfor %}
+  <h2>Post a tee time</h2>
+  <form action="{{ url_for('create_post') }}" method="post">
+    <input type="hidden" name="formToken" value="{{ session.formToken }}">
+    <label for="course">Course name</label>
+    <input id="course" name="course" maxlength="120" required>
+    <label for="date">Date</label>
+    <input id="date" name="date" type="date" required>
+    <label for="time">Time (Seattle)</label>
+    <input id="time" name="time" type="time" required>
+    <br><button type="submit">Create tee time</button>
+  </form>
+</body>
+</html>
