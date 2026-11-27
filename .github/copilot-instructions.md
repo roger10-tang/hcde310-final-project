@@ -47,4 +47,4 @@ Past tee-time posts are deleted automatically. GolfCore failures should not prev
 - Final details of the interface and additional features.
 
 ## Wrap up
-When we say "wrap up": summarize the changed files and suggest a commit message. Don't commit until we say yes.
+When we say "wrap up": add an entry to ai_use.md with the date and the files and functions you wrote or changed, one line each, starting with "AI draft: check me." Leave "Reflection:" blank. Suggest a commit message. Don't commit until we say yes.

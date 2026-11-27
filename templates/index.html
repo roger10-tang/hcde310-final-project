@@ -10,6 +10,7 @@
     button, input { font: inherit; padding: 6px 10px; }
     label { display: block; margin-top: 10px; }
     button { cursor: pointer; margin-top: 12px; }
+    .weather { color: #555; }
   </style>
   <script src="{{ url_for('static', filename='counts.js') }}" defer></script>
 </head>
@@ -22,8 +23,15 @@
   <p id="count-status" role="status"></p>
   {% for post in posts %}
     <article data-post-id="{{ post.postId }}">
-      <h3>{{ post.courseName }}</h3>
-      <p>{{ post.date }} at {{ post.time }} (Seattle time)</p>
+      <h3>{{ courses[post.postId].name if courses[post.postId] else post.courseName }}</h3>
+      <p>{{ post.date }} at {{ post.time }} (Seattle time){% if courses[post.postId] and courses[post.postId].city %} &middot; {{ courses[post.postId].city }}{% endif %}</p>
+      <p class="weather">
+        {%- if weather[post.postId] is not none -%}
+          {{ weather[post.postId] }}% chance of rain at {{ post.time }}
+        {%- else -%}
+          Weather unavailable
+        {%- endif -%}
+      </p>
       <p><span data-count>{{ states[post.postId].count }}</span> interested</p>
       <form action="{{ url_for('toggle_interest', post_id=post.postId) }}" method="post">
         <input type="hidden" name="formToken" value="{{ session.formToken }}">
