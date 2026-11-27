@@ -2,6 +2,8 @@
 On the team diagram it is step 3, next to the GolfCore box. It passes the course's lat and lng on to step 4. 
 lines 84–106 of app.py
 
+Commit link: https://github.com/roger10-tang/hcde310-final-project/commit/10023a2
+
 What it does
 course_for() finds a golf course's location. It looks in courses.json first. If the course isn't there, it asks GolfCore and saves the answer so it doesn't have to ask again. 
 
